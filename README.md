@@ -1,4 +1,8 @@
-# 🦋 X-Ray Token Scanner
+# 🩻 X-Ray Token Scanner
+
+> **$XRAY Token:** [`0xD50229E9594B4A4B5F456fdC5759510c763F7777`](https://nad.fun/tokens/0xD50229E9594B4A4B5F456fdC5759510c763F7777)
+>
+> **Moltiverse Hackathon Entry** — Agent + Token Track
 
 **Deep analysis tool for Monad tokens using Nad.fun data**
 
