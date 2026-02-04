@@ -14,8 +14,75 @@
       padding: 20px;
     }
     .container { max-width: 900px; margin: 0 auto; }
-    h1 { text-align: center; margin-bottom: 10px; font-size: 2.5em; }
-    .subtitle { text-align: center; color: #888; margin-bottom: 40px; }
+    
+    /* Header with wallet */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo h1 { font-size: 1.8em; }
+    
+    /* Wallet Button */
+    .wallet-btn {
+      padding: 12px 20px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .wallet-btn:hover { background: rgba(255,255,255,0.15); }
+    .wallet-btn.connected { border-color: #00ff88; background: rgba(0,255,136,0.1); }
+    
+    /* Premium Banner */
+    .premium-banner {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .premium-banner.basic { background: linear-gradient(135deg, #333 0%, #444 100%); }
+    .premium-banner.holder { background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%); }
+    .premium-banner.whale { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+    .premium-info h3 { margin-bottom: 5px; }
+    .premium-info p { opacity: 0.9; font-size: 14px; }
+    .tier-badge {
+      padding: 8px 16px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    
+    /* Token Display */
+    .xray-balance {
+      text-align: center;
+      padding: 15px;
+      background: rgba(0,255,136,0.1);
+      border: 1px solid rgba(0,255,136,0.3);
+      border-radius: 12px;
+      margin-bottom: 25px;
+      display: none;
+    }
+    .xray-balance.show { display: block; }
+    .xray-amount { font-size: 24px; font-weight: bold; color: #00ff88; }
+    .xray-label { color: #888; font-size: 14px; margin-top: 5px; }
+    .buy-link { color: #00ff88; text-decoration: none; font-size: 14px; }
+    .buy-link:hover { text-decoration: underline; }
+    
+    .subtitle { text-align: center; color: #888; margin-bottom: 30px; }
+    
     .search-box {
       display: flex;
       gap: 10px;
@@ -43,8 +110,10 @@
     }
     button:hover { transform: scale(1.02); }
     button:disabled { opacity: 0.5; cursor: not-allowed; }
+    
     .results { display: none; }
     .results.show { display: block; }
+    
     .card {
       background: rgba(255,255,255,0.05);
       border-radius: 16px;
@@ -52,6 +121,23 @@
       margin-bottom: 20px;
       border: 1px solid rgba(255,255,255,0.1);
     }
+    .card.premium-locked {
+      position: relative;
+      overflow: hidden;
+    }
+    .card.premium-locked::after {
+      content: '🔒 Hold $XRAY to unlock';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      backdrop-filter: blur(5px);
+    }
+    .card.premium-locked.unlocked::after { display: none; }
+    
     .risk-score {
       text-align: center;
       padding: 30px;
@@ -70,6 +156,7 @@
     .risk-low { background: rgba(0, 204, 102, 0.2); border: 3px solid #00cc66; }
     .risk-medium { background: rgba(255, 170, 0, 0.2); border: 3px solid #ffaa00; }
     .risk-high { background: rgba(255, 68, 68, 0.2); border: 3px solid #ff4444; }
+    
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -83,6 +170,7 @@
     }
     .stat-value { font-size: 28px; font-weight: bold; color: #00ff88; }
     .stat-label { color: #888; margin-top: 5px; }
+    
     .alert {
       padding: 12px 16px;
       border-radius: 8px;
@@ -94,6 +182,7 @@
     .alert-high { background: rgba(255,68,68,0.2); border-left: 3px solid #ff4444; }
     .alert-medium { background: rgba(255,170,0,0.2); border-left: 3px solid #ffaa00; }
     .alert-info { background: rgba(0,136,255,0.2); border-left: 3px solid #0088ff; }
+    
     .whales-list { margin-top: 15px; }
     .whale-item {
       display: flex;
@@ -104,6 +193,18 @@
       margin-bottom: 8px;
       font-family: monospace;
     }
+    
+    /* AI Analysis Premium Section */
+    .ai-analysis {
+      margin-top: 15px;
+      padding: 15px;
+      background: linear-gradient(135deg, rgba(102,126,234,0.2) 0%, rgba(118,75,162,0.2) 100%);
+      border-radius: 12px;
+      border: 1px solid rgba(102,126,234,0.3);
+    }
+    .ai-analysis h4 { color: #667eea; margin-bottom: 10px; }
+    .ai-analysis p { line-height: 1.6; color: #ccc; }
+    
     .loading { text-align: center; padding: 40px; }
     .spinner {
       width: 40px;
@@ -116,17 +217,80 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     .error { color: #ff4444; text-align: center; padding: 20px; }
+    
     .powered-by {
       text-align: center;
       margin-top: 40px;
       color: #666;
       font-size: 14px;
     }
+    .powered-by a { color: #00ff88; text-decoration: none; }
+    .powered-by a:hover { text-decoration: underline; }
+    
+    /* Feature Grid */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    .feature {
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+    }
+    .feature.locked { opacity: 0.5; }
+    .feature .icon { font-size: 24px; margin-bottom: 8px; }
+    .feature .name { font-size: 14px; font-weight: 500; }
+    .feature .status { font-size: 12px; color: #888; margin-top: 5px; }
+    .feature.unlocked .status { color: #00ff88; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🩻 X-Ray Scanner</h1>
+    <div class="header">
+      <div class="logo">
+        <h1>🩻 X-Ray Scanner</h1>
+      </div>
+      <button class="wallet-btn" id="walletBtn" onclick="connectWallet()">
+        <span>🔗</span>
+        <span id="walletText">Connect Wallet</span>
+      </button>
+    </div>
+    
+    <div class="premium-banner basic" id="premiumBanner">
+      <div class="premium-info">
+        <h3 id="tierTitle">🔓 Free Tier</h3>
+        <p id="tierDesc">Connect wallet & hold $XRAY to unlock premium features</p>
+      </div>
+      <div class="tier-badge" id="tierBadge">FREE</div>
+    </div>
+    
+    <div class="xray-balance" id="xrayBalance">
+      <div class="xray-amount" id="xrayAmount">0</div>
+      <div class="xray-label">$XRAY Balance</div>
+      <a href="https://nad.fun/token/0xD50229E9594B4A4B5F456fdC5759510c763F7777" target="_blank" class="buy-link">Buy more on nad.fun →</a>
+    </div>
+    
+    <div class="features">
+      <div class="feature unlocked">
+        <div class="icon">📊</div>
+        <div class="name">Basic Scan</div>
+        <div class="status">✓ Available</div>
+      </div>
+      <div class="feature" id="featureAlerts">
+        <div class="icon">⚠️</div>
+        <div class="name">Risk Alerts</div>
+        <div class="status">Hold 1K $XRAY</div>
+      </div>
+      <div class="feature" id="featureAI">
+        <div class="icon">🤖</div>
+        <div class="name">AI Analysis</div>
+        <div class="status">Hold 10K $XRAY</div>
+      </div>
+    </div>
+    
     <p class="subtitle">CT scan for any token on Monad</p>
     
     <div class="search-box">
@@ -171,8 +335,8 @@
         </div>
       </div>
       
-      <div class="card">
-        <h3>⚠️ Alerts</h3>
+      <div class="card premium-locked" id="alertsCard">
+        <h3>⚠️ Risk Alerts</h3>
         <div id="alerts"></div>
       </div>
       
@@ -180,14 +344,195 @@
         <h3>🐋 Top Whales</h3>
         <div id="whales" class="whales-list"></div>
       </div>
+      
+      <div class="card premium-locked" id="aiCard">
+        <h3>🤖 AI Analysis</h3>
+        <div class="ai-analysis" id="aiAnalysis">
+          <h4>Deep Pattern Recognition</h4>
+          <p id="aiText">Loading AI analysis...</p>
+        </div>
+      </div>
     </div>
     
     <div class="powered-by">
-      Powered by X-Ray Token Scanner | Built for Moltiverse Hackathon 🦋
+      Powered by <a href="https://nad.fun/token/0xD50229E9594B4A4B5F456fdC5759510c763F7777" target="_blank">$XRAY</a> | 
+      <a href="https://github.com/charleebitmyfinger/xray-token-scanner" target="_blank">GitHub</a> |
+      Built for Moltiverse Hackathon 🦋
     </div>
   </div>
 
   <script>
+    // $XRAY Token Contract
+    const XRAY_TOKEN = '0xD50229E9594B4A4B5F456fdC5759510c763F7777';
+    const ERC20_ABI = ['function balanceOf(address) view returns (uint256)'];
+    
+    // Tier thresholds (in whole tokens)
+    const TIERS = {
+      FREE: 0,
+      HOLDER: 1000,      // 1K $XRAY
+      WHALE: 10000       // 10K $XRAY
+    };
+    
+    let userAddress = null;
+    let xrayBalance = 0;
+    let currentTier = 'FREE';
+    
+    async function connectWallet() {
+      if (!window.ethereum) {
+        alert('Please install MetaMask or another Web3 wallet!');
+        return;
+      }
+      
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        userAddress = accounts[0];
+        
+        // Update UI
+        document.getElementById('walletBtn').classList.add('connected');
+        document.getElementById('walletText').textContent = userAddress.slice(0,6) + '...' + userAddress.slice(-4);
+        
+        // Check $XRAY balance
+        await checkXrayBalance();
+        
+        // Listen for account changes
+        window.ethereum.on('accountsChanged', handleAccountChange);
+        
+      } catch (err) {
+        console.error('Wallet connection failed:', err);
+      }
+    }
+    
+    async function handleAccountChange(accounts) {
+      if (accounts.length === 0) {
+        // Disconnected
+        userAddress = null;
+        xrayBalance = 0;
+        currentTier = 'FREE';
+        document.getElementById('walletBtn').classList.remove('connected');
+        document.getElementById('walletText').textContent = 'Connect Wallet';
+        document.getElementById('xrayBalance').classList.remove('show');
+        updateTierUI();
+      } else {
+        userAddress = accounts[0];
+        document.getElementById('walletText').textContent = userAddress.slice(0,6) + '...' + userAddress.slice(-4);
+        await checkXrayBalance();
+      }
+    }
+    
+    async function checkXrayBalance() {
+      if (!userAddress || !window.ethereum) return;
+      
+      try {
+        // Switch to Monad if needed
+        try {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x8F' }], // 143 in hex
+          });
+        } catch (switchError) {
+          if (switchError.code === 4902) {
+            // Chain not added, add it
+            await window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [{
+                chainId: '0x8F',
+                chainName: 'Monad',
+                nativeCurrency: { name: 'MON', symbol: 'MON', decimals: 18 },
+                rpcUrls: ['https://monad-mainnet.drpc.org'],
+              }],
+            });
+          }
+        }
+        
+        // Call balanceOf using eth_call
+        const data = '0x70a08231000000000000000000000000' + userAddress.slice(2).toLowerCase();
+        const result = await window.ethereum.request({
+          method: 'eth_call',
+          params: [{
+            to: XRAY_TOKEN,
+            data: data
+          }, 'latest']
+        });
+        
+        // Parse balance (18 decimals)
+        xrayBalance = parseInt(result, 16) / 1e18;
+        
+        // Update UI
+        document.getElementById('xrayBalance').classList.add('show');
+        document.getElementById('xrayAmount').textContent = formatNumber(xrayBalance);
+        
+        // Determine tier
+        if (xrayBalance >= TIERS.WHALE) {
+          currentTier = 'WHALE';
+        } else if (xrayBalance >= TIERS.HOLDER) {
+          currentTier = 'HOLDER';
+        } else {
+          currentTier = 'FREE';
+        }
+        
+        updateTierUI();
+        
+      } catch (err) {
+        console.error('Balance check failed:', err);
+      }
+    }
+    
+    function formatNumber(num) {
+      if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(2) + 'K';
+      return num.toFixed(2);
+    }
+    
+    function updateTierUI() {
+      const banner = document.getElementById('premiumBanner');
+      const title = document.getElementById('tierTitle');
+      const desc = document.getElementById('tierDesc');
+      const badge = document.getElementById('tierBadge');
+      const alertsCard = document.getElementById('alertsCard');
+      const aiCard = document.getElementById('aiCard');
+      const featureAlerts = document.getElementById('featureAlerts');
+      const featureAI = document.getElementById('featureAI');
+      
+      banner.className = 'premium-banner';
+      alertsCard.classList.remove('unlocked');
+      aiCard.classList.remove('unlocked');
+      featureAlerts.classList.remove('unlocked');
+      featureAlerts.classList.add('locked');
+      featureAI.classList.remove('unlocked');
+      featureAI.classList.add('locked');
+      
+      if (currentTier === 'WHALE') {
+        banner.classList.add('whale');
+        title.textContent = '🐋 Whale Tier';
+        desc.textContent = 'All features unlocked! You have ultimate X-Ray vision.';
+        badge.textContent = 'WHALE';
+        alertsCard.classList.add('unlocked');
+        aiCard.classList.add('unlocked');
+        featureAlerts.classList.remove('locked');
+        featureAlerts.classList.add('unlocked');
+        featureAlerts.querySelector('.status').textContent = '✓ Unlocked';
+        featureAI.classList.remove('locked');
+        featureAI.classList.add('unlocked');
+        featureAI.querySelector('.status').textContent = '✓ Unlocked';
+      } else if (currentTier === 'HOLDER') {
+        banner.classList.add('holder');
+        title.textContent = '💎 Holder Tier';
+        desc.textContent = 'Risk alerts unlocked! Hold 10K $XRAY for AI analysis.';
+        badge.textContent = 'HOLDER';
+        alertsCard.classList.add('unlocked');
+        featureAlerts.classList.remove('locked');
+        featureAlerts.classList.add('unlocked');
+        featureAlerts.querySelector('.status').textContent = '✓ Unlocked';
+      } else {
+        banner.classList.add('basic');
+        title.textContent = '🔓 Free Tier';
+        desc.textContent = userAddress 
+          ? 'Hold 1K $XRAY to unlock Risk Alerts!'
+          : 'Connect wallet & hold $XRAY to unlock premium features';
+        badge.textContent = 'FREE';
+      }
+    }
+    
     async function scanToken() {
       const token = document.getElementById('tokenInput').value.trim();
       if (!token) return alert('Please enter a token address');
@@ -201,7 +546,11 @@
         const res = await fetch('/api/scan', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token })
+          body: JSON.stringify({ 
+            token,
+            tier: currentTier,
+            holder: userAddress
+          })
         });
         
         const data = await res.json();
@@ -232,15 +581,28 @@
       document.getElementById('whaleCount').textContent = data.whales.length;
       document.getElementById('concentration').textContent = data.distribution.concentrationIndex;
       
-      const alertsHtml = data.alerts.map(a => 
-        `<div class="alert alert-${a.severity}">${a.message}</div>`
-      ).join('');
-      document.getElementById('alerts').innerHTML = alertsHtml || '<p style="color:#888">No alerts</p>';
+      // Alerts (premium feature)
+      if (currentTier !== 'FREE') {
+        const alertsHtml = data.alerts.map(a => 
+          `<div class="alert alert-${a.severity}">${a.message}</div>`
+        ).join('');
+        document.getElementById('alerts').innerHTML = alertsHtml || '<p style="color:#888">No alerts</p>';
+      } else {
+        document.getElementById('alerts').innerHTML = '<p style="color:#888">Upgrade to see alerts</p>';
+      }
       
+      // Whales (free)
       const whalesHtml = data.whales.slice(0, 10).map(w =>
         `<div class="whale-item"><span>${w.address.slice(0,8)}...${w.address.slice(-6)}</span><span>${w.percentage}%</span></div>`
       ).join('');
       document.getElementById('whales').innerHTML = whalesHtml || '<p style="color:#888">No whales detected</p>';
+      
+      // AI Analysis (whale tier)
+      if (currentTier === 'WHALE' && data.aiAnalysis) {
+        document.getElementById('aiText').textContent = data.aiAnalysis;
+      } else {
+        document.getElementById('aiText').textContent = 'Hold 10K $XRAY to unlock AI-powered insights.';
+      }
       
       document.getElementById('results').classList.add('show');
     }
@@ -248,6 +610,17 @@
     document.getElementById('tokenInput').addEventListener('keypress', e => {
       if (e.key === 'Enter') scanToken();
     });
+    
+    // Initialize tier UI
+    updateTierUI();
+    
+    // Check if wallet already connected
+    if (window.ethereum && window.ethereum.selectedAddress) {
+      userAddress = window.ethereum.selectedAddress;
+      document.getElementById('walletBtn').classList.add('connected');
+      document.getElementById('walletText').textContent = userAddress.slice(0,6) + '...' + userAddress.slice(-4);
+      checkXrayBalance();
+    }
   </script>
 </body>
 </html>

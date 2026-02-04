@@ -167,7 +167,7 @@ async function main() {
 
   // Step 4: Create token (no initial buy to simplify)
   console.log('\n🚀 Step 4: Creating token...');
-  const deployFee = parseEther('10');
+  const deployFee = parseEther('9'); // Trying with 9 MON
   
   const createArgs = {
     name: TOKEN.name,
@@ -175,11 +175,11 @@ async function main() {
     tokenURI: metadata_uri,
     amountOut: 0n, // No initial buy
     salt: salt,
-    actionId: 1, // uint8
+    actionId: 0, // uint8 - try 0 for simple create
   };
   
   console.log('Args:', createArgs);
-  console.log(`Value: ${Number(deployFee) / 1e18} MON`);
+  console.log(`Value: ${Number(deployFee) / 1e18} MON (trying lower fee)`);
 
   // Simulate first
   console.log('Simulating...');
