@@ -1,119 +1,173 @@
-# X-Ray Token Scanner 🩻
+# 🦋 X-Ray Token Scanner
 
-**The CT Scan for Monad Tokens**
+**Deep analysis tool for Monad tokens using Nad.fun data**
 
-X-Ray Token Scanner provides deep analysis of any token on Monad and Nad.fun. Like a medical CT scan reveals what's hidden inside the body, X-Ray reveals the hidden patterns, risks, and opportunities in crypto tokens.
+## Overview
 
-## 🎯 Features
+X-Ray Token Scanner is a comprehensive token analysis tool built for the Monad ecosystem. It combines on-chain data from Monad RPC with market data from Nad.fun to provide deep insights into token risks, holder distribution, and security metrics.
 
-### Core Analysis
-- **Holder Distribution** - Visual breakdown of token ownership
-- **Whale Detection** - Identify large holders and track their movements  
-- **Risk Scoring** - Multi-factor risk assessment (0-100 scale)
-- **Real-time Alerts** - Monitor suspicious activities
+## Features
 
-### Risk Score Components
-| Factor | Weight | What We Check |
-|--------|--------|--------------|
-| Holder Concentration | 0-30 | Top 10 holder percentage |
-| Whale Risk | 0-25 | Number and size of whales |
-| Holder Count | 0-20 | Total unique holders |
-| Activity | 0-15 | Recent transfer frequency |
-| Concentration Index | 0-10 | Gini-style distribution |
+- **Multi-source data**: Combines Monad RPC + Nad.fun API
+- **Risk scoring**: Advanced risk calculation based on 15+ factors
+- **Holder analysis**: Deep dive into token distribution and whale concentration
+- **Security checks**: Honeypot detection, tax analysis, mint risks
+- **Real-time data**: Live market data and holder metrics
+- **RESTful API**: Simple HTTP endpoints for integration
 
-### Token Utility ($XRAY)
-- **Free Tier**: 10 scans/day, basic metrics
-- **Premium Tier**: Unlimited scans, advanced analytics, alerts
-- **Holder Benefits**: Hold $XRAY to unlock premium features
-
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
-# Clone the repo
-git clone https://github.com/yourname/xray-token-scanner
-cd xray-token-scanner
-
 # Install dependencies
 npm install
 
-# Configure environment
+# Copy environment template
 cp .env.example .env
 
 # Start the server
 npm start
+
+# Development mode with auto-reload
+npm run dev
 ```
 
-Visit `http://localhost:3000` to use the web interface.
+## API Endpoints
 
-## 📡 API Usage
+### GET /scan/:tokenAddress
+Analyze any Monad token for risks and insights.
 
 ```bash
-# Scan a token
-curl -X POST http://localhost:3000/api/scan \
-  -H "Content-Type: application/json" \
-  -d '{"token": "0x..."}'
+curl http://localhost:3000/scan/0x1234...abcd
 ```
 
-### Response Example
-```json
-{
-  "token": {
-    "address": "0x...",
-    "name": "Example Token",
-    "symbol": "EXT",
-    "totalSupply": "1000000"
-  },
-  "riskScore": 35,
-  "riskLevel": { "level": "LOW", "emoji": "🟢" },
-  "distribution": {
-    "totalHolders": 1247,
-    "top10Percent": "42.5",
-    "concentrationIndex": "38.2"
-  },
-  "whales": [
-    { "address": "0x...", "percentage": "8.5" }
-  ],
-  "alerts": [
-    { "type": "info", "message": "Healthy holder distribution" }
-  ]
-}
+**Response includes:**
+- Token metadata and security score
+- Market data (price, volume, liquidity)
+- Holder distribution analysis
+- Risk score (0-100) with detailed insights
+- Whale concentration warnings
+
+### GET /health
+Health check endpoint.
+
+```bash
+curl http://localhost:3000/health
 ```
 
-## 🛠️ Tech Stack
+## Risk Factors Analyzed
 
-- **Backend**: Node.js + Express
-- **Frontend**: Vanilla JS + CSS
-- **Blockchain**: Monad RPC + Nad.fun API
-- **Token**: $XRAY on Nad.fun
+### Security Risks
+- Honeypot detection
+- Mint function risks
+- Buy/sell taxes
+- Contract verification status
 
-## 🗺️ Roadmap
+### Holder Risks
+- Whale concentration (Gini coefficient)
+- Top 10/50/100 holder percentages
+- Total holder count
 
-### Hackathon (Feb 4-7)
-- [x] Core token analysis
-- [x] Holder distribution  
-- [x] Whale detection
-- [x] Risk scoring
-- [x] Web interface
-- [ ] $XRAY token launch
-- [ ] Demo video
+### Market Risks
+- Liquidity depth
+- Trading volume
+- Price volatility
+- Market cap
 
-### Post-Hackathon
-- [ ] Real-time alerts
-- [ ] Portfolio tracking
-- [ ] Multi-chain support
-- [ ] Mobile app
+### Social Risks
+- Community size (Twitter/Telegram)
+- Social engagement score
+- Website presence
 
-## 🏆 Moltiverse Hackathon
+### Age Risks
+- Token creation date
+- Days since launch
+- New token warnings
 
-Built for the [Moltiverse Hackathon](https://moltiverse.dev) by Nad.fun & Monad.
+## Architecture
 
-**Track**: Agent + Token  
-**Prize Pool**: $200K
+```
+src/
+├── index.js              # Express server setup
+├── api/
+│   ├── monad.js         # Monad RPC client
+│   └── nadfun.js        # Nad.fun API client
+└── scanner/
+    └── tokenAnalyzer.js # Core analysis engine
+```
 
-## 📄 License
+## Risk Score Calculation
 
-MIT License - see [LICENSE](LICENSE) for details.
+The risk score (0-100) is calculated using:
+
+- **Security risks**: 30% weight (honeypot, taxes, mint)
+- **Holder concentration**: 25% weight (whale %, distribution)
+- **Liquidity risks**: 20% weight (depth, volume)
+- **Age risks**: 15% weight (new token penalties)
+- **Social risks**: 10% weight (community size)
+
+**Risk Levels:**
+- 0-20: MINIMAL (safe)
+- 21-40: LOW (minor concerns)
+- 41-60: MEDIUM (proceed with caution)
+- 61-80: HIGH (significant risks)
+- 81-100: EXTREME (avoid)
+
+## Usage Examples
+
+### Analyzing a Token
+```javascript
+const TokenAnalyzer = require('./src/scanner/tokenAnalyzer');
+
+const analyzer = new TokenAnalyzer();
+const analysis = await analyzer.analyze('0x123...abc');
+
+console.log(`Risk Score: ${analysis.risk.score}/100`);
+console.log(`Risk Level: ${analysis.risk.level}`);
+console.log('Insights:', analysis.risk.insights);
+```
+
+### Running Queries
+```bash
+# Analyze a specific token
+curl http://localhost:3000/scan/0x1234567890abcdef1234567890abcdef12345678
+
+# Check server health
+curl http://localhost:3000/health
+```
+
+## Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `PORT` | Server port | 3000 |
+| `MONAD_RPC_URL` | Monad RPC endpoint | https://rpc.monad.xyz |
+| `NADFUN_API_URL` | Nad.fun API endpoint | https://api.nadapp.net |
+| `RATE_LIMIT_MAX_REQUESTS` | Rate limit per minute | 100 |
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run tests
+npm test
+
+# Development with auto-reload
+npm run dev
+
+# Production start
+npm start
+```
+
+## Contributing
+
+This is a hackathon project built for the Moltiverse. Feel free to fork and extend!
+
+## License
+
+MIT - Built with ❤️ for the Monad ecosystem
 
 ---
 
-Built by [Molt Mon Nad](https://moltbook.com/u/MoltMonNad) 🦋
+**Built by Molt Mon Nad 🦋 for the Moltiverse Hackathon**
