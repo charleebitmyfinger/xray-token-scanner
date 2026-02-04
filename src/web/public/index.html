@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>X-Ray Token Scanner 🩻</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      min-height: 100vh;
+      color: #fff;
+      padding: 20px;
+    }
+    .container { max-width: 900px; margin: 0 auto; }
+    h1 { text-align: center; margin-bottom: 10px; font-size: 2.5em; }
+    .subtitle { text-align: center; color: #888; margin-bottom: 40px; }
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+    input {
+      flex: 1;
+      padding: 15px 20px;
+      border: 2px solid #333;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      font-size: 16px;
+    }
+    input:focus { outline: none; border-color: #00ff88; }
+    button {
+      padding: 15px 30px;
+      background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+      border: none;
+      border-radius: 12px;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover { transform: scale(1.02); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .results { display: none; }
+    .results.show { display: block; }
+    .card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .risk-score {
+      text-align: center;
+      padding: 30px;
+    }
+    .score-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 36px;
+      font-weight: bold;
+    }
+    .risk-low { background: rgba(0, 204, 102, 0.2); border: 3px solid #00cc66; }
+    .risk-medium { background: rgba(255, 170, 0, 0.2); border: 3px solid #ffaa00; }
+    .risk-high { background: rgba(255, 68, 68, 0.2); border: 3px solid #ff4444; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+    .stat {
+      background: rgba(0,0,0,0.2);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .stat-value { font-size: 28px; font-weight: bold; color: #00ff88; }
+    .stat-label { color: #888; margin-top: 5px; }
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .alert-high { background: rgba(255,68,68,0.2); border-left: 3px solid #ff4444; }
+    .alert-medium { background: rgba(255,170,0,0.2); border-left: 3px solid #ffaa00; }
+    .alert-info { background: rgba(0,136,255,0.2); border-left: 3px solid #0088ff; }
+    .whales-list { margin-top: 15px; }
+    .whale-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-family: monospace;
+    }
+    .loading { text-align: center; padding: 40px; }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top-color: #00ff88;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 15px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .error { color: #ff4444; text-align: center; padding: 20px; }
+    .powered-by {
+      text-align: center;
+      margin-top: 40px;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🩻 X-Ray Scanner</h1>
+    <p class="subtitle">CT scan for any token on Monad</p>
+    
+    <div class="search-box">
+      <input type="text" id="tokenInput" placeholder="Enter token address (0x...)" />
+      <button id="scanBtn" onclick="scanToken()">Scan</button>
+    </div>
+    
+    <div id="loading" class="loading" style="display:none;">
+      <div class="spinner"></div>
+      <p>Analyzing token...</p>
+    </div>
+    
+    <div id="error" class="error" style="display:none;"></div>
+    
+    <div id="results" class="results">
+      <div class="card risk-score">
+        <div id="scoreCircle" class="score-circle risk-low">
+          <span id="riskScore">0</span>
+        </div>
+        <div id="riskLevel">LOW RISK</div>
+      </div>
+      
+      <div class="card">
+        <h3>📊 Distribution</h3>
+        <div class="stats-grid">
+          <div class="stat">
+            <div class="stat-value" id="totalHolders">-</div>
+            <div class="stat-label">Total Holders</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="top10">-</div>
+            <div class="stat-label">Top 10 Hold %</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="whaleCount">-</div>
+            <div class="stat-label">Whales (>1%)</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="concentration">-</div>
+            <div class="stat-label">Concentration</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h3>⚠️ Alerts</h3>
+        <div id="alerts"></div>
+      </div>
+      
+      <div class="card">
+        <h3>🐋 Top Whales</h3>
+        <div id="whales" class="whales-list"></div>
+      </div>
+    </div>
+    
+    <div class="powered-by">
+      Powered by X-Ray Token Scanner | Built for Moltiverse Hackathon 🦋
+    </div>
+  </div>
+
+  <script>
+    async function scanToken() {
+      const token = document.getElementById('tokenInput').value.trim();
+      if (!token) return alert('Please enter a token address');
+      
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('results').classList.remove('show');
+      document.getElementById('error').style.display = 'none';
+      document.getElementById('scanBtn').disabled = true;
+      
+      try {
+        const res = await fetch('/api/scan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token })
+        });
+        
+        const data = await res.json();
+        if (data.error) throw new Error(data.message || data.error);
+        
+        displayResults(data);
+      } catch (err) {
+        document.getElementById('error').textContent = err.message;
+        document.getElementById('error').style.display = 'block';
+      } finally {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('scanBtn').disabled = false;
+      }
+    }
+    
+    function displayResults(data) {
+      document.getElementById('riskScore').textContent = data.riskScore;
+      document.getElementById('riskLevel').textContent = data.riskLevel.level + ' RISK ' + data.riskLevel.emoji;
+      
+      const circle = document.getElementById('scoreCircle');
+      circle.className = 'score-circle';
+      if (data.riskScore >= 70) circle.classList.add('risk-high');
+      else if (data.riskScore >= 40) circle.classList.add('risk-medium');
+      else circle.classList.add('risk-low');
+      
+      document.getElementById('totalHolders').textContent = data.distribution.totalHolders;
+      document.getElementById('top10').textContent = data.distribution.top10Percent + '%';
+      document.getElementById('whaleCount').textContent = data.whales.length;
+      document.getElementById('concentration').textContent = data.distribution.concentrationIndex;
+      
+      const alertsHtml = data.alerts.map(a => 
+        `<div class="alert alert-${a.severity}">${a.message}</div>`
+      ).join('');
+      document.getElementById('alerts').innerHTML = alertsHtml || '<p style="color:#888">No alerts</p>';
+      
+      const whalesHtml = data.whales.slice(0, 10).map(w =>
+        `<div class="whale-item"><span>${w.address.slice(0,8)}...${w.address.slice(-6)}</span><span>${w.percentage}%</span></div>`
+      ).join('');
+      document.getElementById('whales').innerHTML = whalesHtml || '<p style="color:#888">No whales detected</p>';
+      
+      document.getElementById('results').classList.add('show');
+    }
+    
+    document.getElementById('tokenInput').addEventListener('keypress', e => {
+      if (e.key === 'Enter') scanToken();
+    });
+  </script>
+</body>
+</html>
