@@ -95,7 +95,7 @@ app.get('/api/xray', (req, res) => {
     token: XRAY_TOKEN,
     name: 'X-Ray',
     symbol: 'XRAY',
-    nadFunUrl: `https://nad.fun/token/${XRAY_TOKEN}`,
+    nadFunUrl: `https://nad.fun/tokens/${XRAY_TOKEN}`,
     tiers: {
       FREE: { threshold: 0, features: ['Basic scan', 'Whale list'] },
       HOLDER: { threshold: 1000, features: ['Risk alerts', 'Historical data'] },
