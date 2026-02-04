@@ -1,23 +1,64 @@
 # 🩻 X-Ray Token Scanner
 
+![Moltiverse Hackathon 2026](https://img.shields.io/badge/Moltiverse%20Hackathon%202026-Competing-blueviolet)
+![Monad](https://img.shields.io/badge/Built%20on-Monad-green)
+![Nad.fun](https://img.shields.io/badge/Trade%20on-Nad.fun-orange)
+
 > **$XRAY Token:** [`0xD50229E9594B4A4B5F456fdC5759510c763F7777`](https://nad.fun/tokens/0xD50229E9594B4A4B5F456fdC5759510c763F7777)
 >
-> **Moltiverse Hackathon Entry** — Agent + Token Track
+> **[🚀 Buy $XRAY on Nad.fun](https://nad.fun/tokens/0xD50229E9594B4A4B5F456fdC5759510c763F7777)**
+>
+> **Moltiverse Hackathon 2026 Entry** — Agent + Token Track 🏆
 
-**Deep analysis tool for Monad tokens using Nad.fun data**
+**The CT Scanner for Crypto - See What Whales See**
 
 ## Overview
 
-X-Ray Token Scanner is a comprehensive token analysis tool built for the Monad ecosystem. It combines on-chain data from Monad RPC with market data from Nad.fun to provide deep insights into token risks, holder distribution, and security metrics.
+X-Ray Token Scanner is your unfair advantage in crypto. While whales hunt with perfect vision, regular degens are flying blind. We built the CT scanner that gives you the same insights whales have - but designed for the community, not the predators.
 
-## Features
+Built for the **Moltiverse Hackathon 2026**, $XRAY combines AI analysis with real-time blockchain data to stop degens from being exit liquidity.
 
-- **Multi-source data**: Combines Monad RPC + Nad.fun API
-- **Risk scoring**: Advanced risk calculation based on 15+ factors
-- **Holder analysis**: Deep dive into token distribution and whale concentration
-- **Security checks**: Honeypot detection, tax analysis, mint risks
-- **Real-time data**: Live market data and holder metrics
-- **RESTful API**: Simple HTTP endpoints for integration
+## 🎯 Why This Matters
+
+Every day, degens get rekt not because they're stupid, but because they're flying blind. $XRAY changes that equation by giving you whale-level intelligence.
+
+## ✨ Features
+
+- **🐋 Whale Vision** - See wallet concentration before you ape
+- **🤖 AI Risk Scoring** - 15+ factors analyzed in real-time  
+- **⚡ Sub-second Scans** - Built on Monad for speed that kills
+- **🛡️ Security Analysis** - Honeypot detection, tax analysis, mint risks
+- **📊 Real-time Data** - Live market data from Nad.fun
+- **🔗 RESTful API** - Easy integration for bots and tools
+
+## 🖼️ Demo & Screenshots
+
+### Live Demo
+**[🚀 Try the Scanner Now](https://nad.fun/tokens/0xD50229E9594B4A4B5F456fdC5759510c763F7777)**
+
+### Screenshots
+*Screenshots coming soon - check the live demo above for real examples*
+
+#### Scanner Interface
+- **Risk Score Dashboard** - 0-100 risk score with detailed breakdown
+- **Whale Analysis** - See exactly who holds what percentage
+- **Real-time Alerts** - Get notified when risk factors change
+
+#### API Responses
+```json
+{
+  "risk": {
+    "score": 23,
+    "level": "LOW",
+    "insights": ["Minimal whale concentration", "Verified contract", "Healthy liquidity"]
+  },
+  "holders": {
+    "total": 1234,
+    "top10": "15.2%",
+    "gini": 0.42
+  }
+}
+```
 
 ## Quick Start
 
